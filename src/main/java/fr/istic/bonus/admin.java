@@ -1,12 +1,12 @@
-package fr.istic.date;
+package fr.istic.bonus;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
-public class RecevoirDate {
-	private static final String EXCHANGE_NAME = "date";
+public class admin {
+	private static final String EXCHANGE_NAME = "chat";
 
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
@@ -15,10 +15,10 @@ public class RecevoirDate {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+        channel.exchangeDeclare(EXCHANGE_NAME, "topic");
         String queueName = channel.queueDeclare().getQueue();
         System.out.println(queueName);
-        channel.queueBind(queueName, EXCHANGE_NAME, "");
+        channel.queueBind(queueName, EXCHANGE_NAME, "#");
 
         System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 

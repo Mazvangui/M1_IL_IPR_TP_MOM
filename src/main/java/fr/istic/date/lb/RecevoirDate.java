@@ -1,4 +1,4 @@
-package fr.istic.date;
+package fr.istic.date.lb;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -16,8 +16,10 @@ public class RecevoirDate {
         Channel channel = connection.createChannel();
 
         channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
-        String queueName = channel.queueDeclare().getQueue();
-        System.out.println(queueName);
+        
+        String queueName = "file_date";
+        channel.queueDeclare(queueName, false, false, false, null);
+        
         channel.queueBind(queueName, EXCHANGE_NAME, "");
 
         System.out.println(" [*] Waiting for messages. To exit press CTRL+C");

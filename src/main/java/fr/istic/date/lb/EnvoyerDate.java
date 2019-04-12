@@ -1,4 +1,4 @@
-package fr.istic.date;
+package fr.istic.date.lb;
 
 
 import java.util.Date;

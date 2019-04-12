@@ -1,19 +1,12 @@
-package fr.istic.date;
-
-
-import java.util.Date;
+package from_github;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
-public class EnvoyerDate {
+public class EmitLog {
 
-	private static final String EXCHANGE_NAME = "date";
-	
-	private static String getDate() {
-	    return (new Date()).toString();
-	}
+    private static final String EXCHANGE_NAME = "logs";
 
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
@@ -22,15 +15,13 @@ public class EnvoyerDate {
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
             channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
-            
-            while(true) {
-            	String date = getDate();
 
-                channel.basicPublish(EXCHANGE_NAME, "", null, date.getBytes("UTF-8"));
-                System.out.println(" [x] Sent '" + date + "'");
-                
-                Thread.sleep(1000);
-            }
+            String message = argv.length < 1 ? "info: Hello World!" :
+                    String.join(" ", argv);
+
+            channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes("UTF-8"));
+            System.out.println(" [x] Sent '" + message + "'");
         }
     }
+
 }
